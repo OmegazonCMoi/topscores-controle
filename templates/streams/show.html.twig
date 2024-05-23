@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Streams{% endblock %}
+
+{% block body %}
+    <h1>Streams</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ stream.id }}</td>
+            </tr>
+            <tr>
+                <th>Url</th>
+                <td>{{ stream.url }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ stream.date ? stream.date|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_streams_index') }}">back to list</a>
+
+    <a href="{{ path('app_streams_edit', {'id': stream.id}) }}">edit</a>
+
+    <h2>Evaluations</h2>
+    {{ form_start(form) }}
+    {{ form_row(form.comment) }}
+    {{ form_row(form.note) }}
+    <button type="submit">Envoyer</button>
+    {{ form_end(form) }}
+
+    <h2>Ajouter Evaluation</h2>
+
+    <ul>
+        {% for evaluations in evaluations %}
+            <li>
+                <strong>Note:</strong> {{ evaluations.note }} / 20
+                <p>{{ evaluations.comment }}</p>
+            </li>
+        {% else %}
+            <li>Aucun commentaire pour ce stream.</li>
+        {% endfor %}
+    </ul>
+
+    {{ include('streams/_delete_form.html.twig') }}
+{% endblock %}

@@ -43,9 +43,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Partie::class, mappedBy: 'user')]
     private Collection $parties;
 
+    /**
+     * @var Collection<int, Streams>
+     */
+    #[ORM\OneToMany(targetEntity: Streams::class, mappedBy: 'User')]
+    private Collection $streams;
+
     public function __construct()
     {
         $this->parties = new ArrayCollection();
+        $this->streams = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -159,6 +166,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($party->getUser() === $this) {
                 $party->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Streams>
+     */
+    public function getStreams(): Collection
+    {
+        return $this->streams;
+    }
+
+    public function addStream(Streams $stream): static
+    {
+        if (!$this->streams->contains($stream)) {
+            $this->streams->add($stream);
+            $stream->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStream(Streams $stream): static
+    {
+        if ($this->streams->removeElement($stream)) {
+            // set the owning side to null (unless already changed)
+            if ($stream->getUser() === $this) {
+                $stream->setUser(null);
             }
         }
 

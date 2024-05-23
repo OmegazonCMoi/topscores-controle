@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Streams{% endblock %}
+
+{% block body %}
+    <h1>Create new Streams</h1>
+
+    {{ include('streams/_form.html.twig') }}
+
+    <a href="{{ path('app_streams_index') }}">back to list</a>
+{% endblock %}
